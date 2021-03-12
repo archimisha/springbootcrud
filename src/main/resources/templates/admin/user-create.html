@@ -10,8 +10,14 @@
     <input type="text" th:field="*{firstName}" id="firstName" placeholder="First Name">
     <label for="lastName">Last name</label>
     <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+    <label for="age">Age</label>
+    <input type="number" th:field="*{age}" id="age" placeholder="Age">
+    <label for="email">E-mail</label>
+    <input type="text" th:field="*{email}" id="email" placeholder="E-mail">
     <label for="password">Password</label>
     <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    <label>User role</label><input type="checkbox" name="userCheck">
+    <label>Admin role</label><input type="checkbox" name="adminCheck">
     <input type="submit" value="Create User">
 </form>
 </body>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--suppress ALL -->
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Update user</title>
@@ -15,8 +15,14 @@
     <br/>
     <label for="lastName">Last name</label>
     <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+    <label for="age">Age</label>
+    <input type="number" th:field="*{age}" id="age" placeholder="Age">
+    <label for="email">E-mail</label>
+    <input type="text" th:field="*{email}" id="email" placeholder="E-mail">
     <label for="password">Password</label>
     <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    <label>User role</label><input th:checked="${roles.contains('ROLE_USER')} ? 'checked'" type="checkbox" name="userCheck">
+    <label>Admin role</label><input th:checked="${roles.contains('ROLE_ADMIN')} ? 'checked'" type="checkbox" name="adminCheck">
     <br/>
     <input type="submit" value="Update User">
 </form>
