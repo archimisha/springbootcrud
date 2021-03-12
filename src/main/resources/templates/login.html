@@ -6,10 +6,17 @@
 </head>
 <body>
 <div>
-    <form method="post" action="/login">
-        <input name="j_username"/>
-        <input name="j_password"/>
-        <input type="submit"/>
+    <form  method="post" action="/login">
+        <h2>Login</h2>
+        <p>
+            <label for="username">First Name</label>
+            <input type="text" id="username" name="j_username" placeholder="First Name" required="" autofocus="">
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="j_password" placeholder="Password" required="">
+        </p>
+        <button type="submit">Sign in</button>
     </form>
 </div>
 </body>

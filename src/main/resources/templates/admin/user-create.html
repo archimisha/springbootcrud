@@ -8,16 +8,22 @@
 <form action="#" th:action="@{/admin}" th:object="${user}" method="post">
     <label for="firstName">First name</label>
     <input type="text" th:field="*{firstName}" id="firstName" placeholder="First Name">
+    <br/>
     <label for="lastName">Last name</label>
     <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+    <br/>
     <label for="age">Age</label>
     <input type="number" th:field="*{age}" id="age" placeholder="Age">
+    <br/>
     <label for="email">E-mail</label>
     <input type="text" th:field="*{email}" id="email" placeholder="E-mail">
+    <br/>
     <label for="password">Password</label>
     <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    <br/>
     <label>User role</label><input type="checkbox" name="userCheck">
     <label>Admin role</label><input type="checkbox" name="adminCheck">
+    <br/>
     <input type="submit" value="Create User">
 </form>
 </body>
