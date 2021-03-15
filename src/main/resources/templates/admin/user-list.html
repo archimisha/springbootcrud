@@ -5,7 +5,7 @@
     <title>Users</title>
 </head>
 <body>
-<div th:switch="${users}">
+<div th:switch="${listUser}">
     <h2 th:case="null">No users found!</h2>
     <div th:case="*">
         <h2>Users</h2>
@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
+            <tr th:each="user : ${listUser}">
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>

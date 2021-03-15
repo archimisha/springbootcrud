@@ -2,8 +2,11 @@ package com.example.springbootcrud.controller;
 
 import com.example.springbootcrud.model.Role;
 import com.example.springbootcrud.model.User;
+import com.example.springbootcrud.service.RoleService;
 import com.example.springbootcrud.service.UserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +19,19 @@ import java.util.Set;
 public class AdminController {
     private final UserService userService;
 
-    public AdminController(UserService userService) {
+    private final RoleService roleService;
+
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
-    public String findAll(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "admin/user-list";
+    public String findAll(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("listRoles", roleService.getAllRoles());
+        model.addAttribute("listUser", userService.findAll());
+        model.addAttribute("user", user);
+        return "admin/user-list-btsrp";
     }
 
     @GetMapping("/new")
@@ -31,18 +39,14 @@ public class AdminController {
         return "admin/user-create";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("user") User user,
-                         @RequestParam(value = "userCheck", required = false) boolean userCheck,
-                         @RequestParam(value = "adminCheck", required = false) boolean adminCheck) {
-        Set<Role> roles = new HashSet<>();
-        if (userCheck) {
-            roles.add(new Role(2L, "ROLE_USER"));
+    @PostMapping("/new")
+    public String create(@ModelAttribute User user,
+                         @RequestParam(value = "roless") String[] role) throws NotFoundException {
+        Set<Role> rolesSet = new HashSet<>();
+        for (String roles : role) {
+            rolesSet.add(roleService.getByName(roles));
         }
-        if (adminCheck) {
-            roles.add(new Role(1L, "ROLE_ADMIN"));
-        }
-        user.setRoles(roles);
+        user.setRoles(rolesSet);
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -55,25 +59,27 @@ public class AdminController {
         return "admin/user-update";
     }
 
-    @PostMapping("/user-update")
-    public String update(@ModelAttribute("user") User user,
-                         @RequestParam(value = "userCheck", required = false) boolean userCheck,
-                         @RequestParam(value = "adminCheck", required = false) boolean adminCheck) {
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute User user,
+                         @RequestParam(value = "roless") String[] role) throws NotFoundException {
         user.setRoles(null);
-        Set<Role> roles = new HashSet<>();
-        if (adminCheck) {
-            roles.add(new Role(1L, "ROLE_ADMIN"));
+        Set<Role> rolesSet = new HashSet<>();
+        for (String roles : role) {
+            rolesSet.add(roleService.getByName(roles));
         }
-        if (userCheck) {
-            roles.add(new Role(2L, "ROLE_USER"));
-        }
-        user.setRoles(roles);
+        user.setRoles(rolesSet);
         userService.update(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
+        userService.deleteById(id);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/{id}/del")
+    public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/admin";
     }
