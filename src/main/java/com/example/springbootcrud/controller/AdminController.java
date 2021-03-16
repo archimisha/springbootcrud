@@ -62,7 +62,7 @@ public class AdminController {
     @PostMapping("/{id}")
     public String update(@ModelAttribute User user,
                          @RequestParam(value = "roless") String[] role) throws NotFoundException {
-        user.setRoles(null);
+
         Set<Role> rolesSet = new HashSet<>();
         for (String roles : role) {
             rolesSet.add(roleService.getByName(roles));
